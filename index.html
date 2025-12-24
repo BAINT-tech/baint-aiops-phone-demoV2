@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,7 +8,7 @@
 
 <style>
 body {
-  background:#FFFFFF;
+  background:#E5E7EB;
   font-family: Arial, sans-serif;
   display:flex;
   justify-content:center;
@@ -16,15 +17,14 @@ body {
   margin:0;
 }
 
-/* PHONE BODY */
+/* PHONE FRAME */
 .phone {
   width:380px;
   height:760px;
-  background:#FFFFFF;
+  background:#000000;
   border-radius:40px;
   padding:14px;
-  box-shadow:0 30px 60px rgba(0,0,0,0.2);
-  position: relative;
+  box-shadow:0 30px 60px rgba(0,0,0,0.4);
 }
 
 /* SCREEN */
@@ -41,7 +41,7 @@ body {
 .notch {
   width:140px;
   height:24px;
-  background:#FFFFFF;
+  background:#000;
   border-radius:0 0 14px 14px;
   margin:0 auto;
 }
@@ -72,7 +72,7 @@ body {
 .brand-logo img {
   width:90px;
   height:90px;
-  margin-bottom:20px;
+  margin-bottom:16px;
 }
 
 /* LOADER */
@@ -90,11 +90,21 @@ body {
   height:100%;
   width:0;
   background:#1E90FF;
-  animation:load 4.5s linear forwards;
+  animation:load 5s linear forwards;
 }
 
 @keyframes load {
   to { width:100%; }
+}
+
+/* FOOTER */
+.boot-footer {
+  position:absolute;
+  bottom:30px;
+  width:100%;
+  text-align:center;
+  font-size:12px;
+  color:#9CA3AF;
 }
 
 /* TEXT */
@@ -107,7 +117,7 @@ p {
   font-size:14px;
 }
 
-/* HOME ICON GRID */
+/* ICON GRID */
 .icon-grid {
   display:grid;
   grid-template-columns:repeat(3,1fr);
@@ -124,20 +134,17 @@ p {
   width:64px;
   height:64px;
   border-radius:16px;
-  background:linear-gradient(135deg,#FF7A18,#2ECC71,#1E90FF);
+  background:linear-gradient(135deg,#1E90FF,#00BFFF);
   margin:0 auto 8px;
 }
 
-.icon img {
-  width:40px;
-  height:40px;
-}
-
-/* DESCRIPTION */
-.home-description {
-  font-size: 14px;
-  color: #6B7280;
-  margin-top: 15px;
+/* CARD */
+.card {
+  background:#F9FAFB;
+  border-radius:14px;
+  padding:16px;
+  margin-top:20px;
+  border:1px solid #E5E7EB;
 }
 
 /* BUTTON */
@@ -147,9 +154,23 @@ button {
   padding:12px 24px;
   border-radius:10px;
   color:white;
-  margin-top:24px;
+  margin-top:20px;
   font-size:14px;
   cursor:pointer;
+}
+
+/* AI CURSOR */
+#ai-cursor {
+  width:16px;
+  height:16px;
+  background:#1E90FF;
+  border-radius:50%;
+  position:absolute;
+  top:60%;
+  left:20%;
+  display:none;
+  z-index:10;
+  box-shadow:0 0 12px rgba(30,144,255,0.9);
 }
 </style>
 </head>
@@ -161,7 +182,7 @@ button {
 
     <div class="notch"></div>
 
-    <!-- BOOT -->
+    <!-- BOOT SCREEN -->
     <div class="screen active" id="boot">
       <div class="center">
         <div class="brand-logo">
@@ -171,54 +192,46 @@ button {
         <p>Powering the Future</p>
         <div class="loader"><span></span></div>
       </div>
+      <div class="boot-footer">Powered by Baintcomputer AIOPs</div>
     </div>
 
     <!-- HOME -->
     <div class="screen" id="home">
       <h3>Home</h3>
-      <p class="home-description">AIOPs makes automation simple and privacy-focused. Your intelligent assistant for a frictionless future.</p>
+      <p style="font-size:13px">Human-centric automation, running on-device</p>
 
       <div class="icon-grid">
-        <div class="app">
-          <div class="icon">
-            <img src="shield-icon.png" alt="Security Icon">
-          </div>
-          Security
-        </div>
-        <div class="app">
-          <div class="icon">
-            <img src="graph-icon.png" alt="Monitor Icon">
-          </div>
-          Monitor
-        </div>
-        <div class="app">
-          <div class="icon">
-            <img src="connect-icon.png" alt="Connect Icon">
-          </div>
-          Connect
-        </div>
+        <div class="app"><div class="icon"></div>AIOPs</div>
+        <div class="app"><div class="icon"></div>Automation</div>
+        <div class="app"><div class="icon"></div>Monitor</div>
+        <div class="app"><div class="icon"></div>Security</div>
+        <div class="app"><div class="icon"></div>System</div>
+        <div class="app"><div class="icon"></div>Connect</div>
       </div>
 
       <button onclick="show('aiops')">Open AIOPs</button>
     </div>
 
-    <!-- AIOPS -->
+    <!-- AIOPs -->
     <div class="screen" id="aiops">
-      <h3>AIOPs</h3>
+      <h3>AIOPs Brain Engine</h3>
 
       <div class="card">
-        <strong>Moment Detection</strong>
-        <input class="toggle" type="checkbox" checked>
-        <p>Auto capture meaningful moments<br>Watching for smiles & group moments</p>
+        <strong>Authorized Task Automation</strong>
+        <p>AI executes tasks visually like a human using your device.</p>
+        <button onclick="startAI()">Authorize Task</button>
       </div>
 
       <div class="card">
-        <strong>Privacy</strong>
-        <p>Runs locally • No cloud upload<br>Turn off anytime</p>
+        <strong>Moment Detection</strong>
+        <p>On-device intelligence • Privacy-first • No cloud</p>
       </div>
 
       <button onclick="show('home')">Back</button>
     </div>
+
+    <!-- AI CURSOR -->
+    <div id="ai-cursor"></div>
 
   </div>
 </div>
@@ -226,11 +239,27 @@ button {
 <script>
 setTimeout(() => {
   show('home');
-}, 4500);
+}, 5000);
 
 function show(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
+}
+
+/* AI CURSOR MOTION */
+function startAI() {
+  const cursor = document.getElementById("ai-cursor");
+  cursor.style.display = "block";
+
+  cursor.animate([
+    { transform: "translate(0, 0)" },
+    { transform: "translate(140px, -120px)" },
+    { transform: "translate(220px, -40px)" }
+  ], {
+    duration: 3000,
+    easing: "ease-in-out",
+    fill: "forwards"
+  });
 }
 </script>
 
