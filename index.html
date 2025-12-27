@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <title>Baint OS – AIOPs Demo</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <style>
 body {
   background:#E5E7EB;
@@ -20,7 +19,7 @@ body {
 .phone {
   width:380px;
   height:760px;
-  background:#000000;
+  background:#000;
   border-radius:40px;
   padding:14px;
   box-shadow:0 30px 60px rgba(0,0,0,0.4);
@@ -30,7 +29,7 @@ body {
 .screen-wrapper {
   width:100%;
   height:100%;
-  background:#FFFFFF;
+  background:#fff;
   border-radius:28px;
   overflow:hidden;
   position:relative;
@@ -46,14 +45,14 @@ body {
 }
 
 /* SCREENS */
-.screen {
+.screen, .mock-screen {
   display:none;
   height:100%;
   padding:20px;
   box-sizing:border-box;
 }
 
-.screen.active {
+.screen.active, .mock-screen.active {
   display:block;
 }
 
@@ -89,7 +88,7 @@ body {
   height:100%;
   width:0;
   background:#1E90FF;
-  animation:load 5s linear forwards;
+  animation:load 4s linear forwards;
 }
 
 @keyframes load {
@@ -107,7 +106,7 @@ body {
 }
 
 /* TEXT */
-h2, h3 {
+h2,h3 {
   margin:8px 0;
 }
 
@@ -128,8 +127,10 @@ p {
   text-align:center;
   font-size:12px;
   cursor:pointer;
+  transition: transform 0.2s;
   position:relative;
 }
+.app:hover { transform: scale(1.1); }
 
 .icon {
   width:64px;
@@ -137,11 +138,6 @@ p {
   border-radius:16px;
   background:linear-gradient(135deg,#1E90FF,#00BFFF);
   margin:0 auto 8px;
-  transition: transform 0.2s;
-}
-
-.icon:hover {
-  transform: scale(1.1);
 }
 
 /* CARD */
@@ -165,10 +161,10 @@ button {
   cursor:pointer;
 }
 
-/* AI CURSOR WITH TINY CAMERA */
+/* AI CURSOR */
 #ai-cursor {
-  width:18px;
-  height:18px;
+  width:20px;
+  height:20px;
   background:#1E90FF;
   border-radius:50%;
   position:absolute;
@@ -181,7 +177,6 @@ button {
   justify-content:center;
   align-items:center;
 }
-
 #ai-cursor::after {
   content:'';
   width:6px;
@@ -189,14 +184,12 @@ button {
   background:#000;
   border-radius:50%;
   display:block;
-  box-shadow:0 0 2px rgba(0,0,0,0.5);
+  box-shadow:0 0 3px rgba(0,0,0,0.5);
+  animation:scan 1s linear infinite alternate;
 }
-
-/* SCANNING EFFECT */
 @keyframes scan {
-  0% { box-shadow:0 0 8px rgba(30,144,255,0.6);}
-  50% { box-shadow:0 0 20px rgba(30,144,255,1);}
-  100% { box-shadow:0 0 8px rgba(30,144,255,0.6);}
+  0% { transform: translate(0,0); }
+  100% { transform: translate(0,2px); }
 }
 
 /* FEATURE CARD MODAL */
@@ -215,13 +208,9 @@ button {
   z-index:20;
   text-align:center;
 }
-
-.feature-card button {
-  margin-top:12px;
-}
+.feature-card button { margin-top:12px; }
 </style>
 </head>
-
 <body>
 
 <div class="phone">
@@ -242,52 +231,40 @@ button {
       <div class="boot-footer">Powered by Baintcomputer AIOPs</div>
     </div>
 
-    <!-- HOME -->
+    <!-- HOME SCREEN -->
     <div class="screen" id="home">
       <h3>Home</h3>
       <p style="font-size:13px">Human-centric automation, running on-device</p>
-
       <div class="icon-grid">
-        <div class="app" onclick="openFeature('AIOPs')">
-          <div class="icon"></div>AIOPs
-        </div>
-        <div class="app" onclick="openFeature('Automation')">
-          <div class="icon"></div>Automation
-        </div>
-        <div class="app" onclick="openFeature('Monitor')">
-          <div class="icon"></div>Monitor
-        </div>
-        <div class="app" onclick="openFeature('Security')">
-          <div class="icon"></div>Security
-        </div>
-        <div class="app" onclick="openFeature('System')">
-          <div class="icon"></div>System
-        </div>
-        <div class="app" onclick="openFeature('Connect')">
-          <div class="icon"></div>Connect
-        </div>
+        <div class="app" onclick="openFeature('AIOPs')"><div class="icon"></div>AIOPs</div>
+        <div class="app" onclick="openFeature('Automation')"><div class="icon"></div>Automation</div>
+        <div class="app" onclick="openFeature('Monitor')"><div class="icon"></div>Monitor</div>
+        <div class="app" onclick="openFeature('Security')"><div class="icon"></div>Security</div>
+        <div class="app" onclick="openFeature('System')"><div class="icon"></div>System</div>
+        <div class="app" onclick="openFeature('Connect')"><div class="icon"></div>Connect</div>
       </div>
-
-      <button onclick="show('aiops')">Open AIOPs</button>
     </div>
 
-    <!-- AIOPs -->
-    <div class="screen" id="aiops">
+    <!-- FEATURE SCREENS -->
+    <div class="mock-screen" id="aiops">
       <h3>AIOPs Brain Engine</h3>
-
       <div class="card">
         <strong>Authorized Task Automation</strong>
         <p>AI executes tasks visually like a human using your device.</p>
         <button onclick="startAI()">Authorize Task</button>
       </div>
-
       <div class="card">
         <strong>Moment Detection</strong>
         <p>On-device intelligence • Privacy-first • No cloud</p>
       </div>
-
-      <button onclick="show('home')">Back</button>
+      <button onclick="backHome()">Back</button>
     </div>
+
+    <div class="mock-screen" id="automation"><h3>Automation</h3><p>Simulate automating repetitive tasks seamlessly.</p><button onclick="backHome()">Back</button></div>
+    <div class="mock-screen" id="monitor"><h3>Monitor</h3><p>Simulate monitoring apps and system health in real-time.</p><button onclick="backHome()">Back</button></div>
+    <div class="mock-screen" id="security"><h3>Security</h3><p>Privacy-first security mock interface.</p><button onclick="backHome()">Back</button></div>
+    <div class="mock-screen" id="system"><h3>System</h3><p>Simulate system controls and settings mockup.</p><button onclick="backHome()">Back</button></div>
+    <div class="mock-screen" id="connect"><h3>Connect</h3><p>Simulate connecting apps and devices.</p><button onclick="backHome()">Back</button></div>
 
     <!-- AI CURSOR -->
     <div id="ai-cursor"></div>
@@ -295,7 +272,7 @@ button {
     <!-- FEATURE MODAL -->
     <div id="feature-card" class="feature-card">
       <h4 id="feature-title">Feature</h4>
-      <p id="feature-desc">Description of feature goes here.</p>
+      <p id="feature-desc">Description goes here.</p>
       <button onclick="closeFeature()">Close</button>
     </div>
 
@@ -303,50 +280,45 @@ button {
 </div>
 
 <script>
-setTimeout(() => {
-  show('home');
-}, 5000);
+/* Boot screen timer */
+setTimeout(() => { show('home'); }, 4500);
 
+/* Show screen */
 function show(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.screen, .mock-screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
 }
 
-/* AI CURSOR MOTION WITH SCANNING */
+/* Open a mock screen */
+function openFeature(name) {
+  const features = {
+    'AIOPs':'Central hub for AI operations, privacy-first, on-device.',
+    'Automation':'Automates repetitive tasks seamlessly on your device.',
+    'Monitor':'Monitor system performance and device usage in real-time.',
+    'Security':'Detects threats and protects your data locally.',
+    'System':'Manage device resources efficiently with AI.',
+    'Connect':'Connect and integrate apps and services securely.'
+  };
+  document.getElementById('feature-title').innerText = name;
+  document.getElementById('feature-desc').innerText = features[name];
+  document.getElementById('feature-card').style.display='block';
+}
+
+/* Close feature modal */
+function closeFeature() { document.getElementById('feature-card').style.display='none'; }
+
+/* Back to home */
+function backHome(){ show('home'); }
+
+/* AI Cursor Animation (only on authorize click) */
 function startAI() {
   const cursor = document.getElementById("ai-cursor");
   cursor.style.display = "flex";
-  cursor.style.animation = "scan 1s infinite";
-
   cursor.animate([
-    { transform: "translate(0, 0)" },
-    { transform: "translate(140px, -120px)" },
-    { transform: "translate(220px, -40px)" }
-  ], {
-    duration: 3000,
-    easing: "ease-in-out",
-    fill: "forwards"
-  });
-}
-
-/* FEATURE MODAL LOGIC */
-const features = {
-  'AIOPs': 'Central hub for AI operations, privacy-first, on-device.',
-  'Automation': 'Automates repetitive tasks seamlessly on your device.',
-  'Monitor': 'Monitor system performance and device usage in real-time.',
-  'Security': 'Detects threats and protects your data locally.',
-  'System': 'Manage device resources efficiently with AI.',
-  'Connect': 'Connect and integrate apps and services securely.'
-};
-
-function openFeature(name) {
-  document.getElementById('feature-title').innerText = name;
-  document.getElementById('feature-desc').innerText = features[name];
-  document.getElementById('feature-card').style.display = 'block';
-}
-
-function closeFeature() {
-  document.getElementById('feature-card').style.display = 'none';
+    { transform:"translate(0,0)"},
+    { transform:"translate(140px,-120px)"},
+    { transform:"translate(220px,-40px)"}
+  ], { duration:3000, easing:"ease-in-out", fill:"forwards"});
 }
 </script>
 
