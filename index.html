@@ -128,7 +128,6 @@ p {
   font-size:12px;
   cursor:pointer;
   transition: transform 0.2s;
-  position:relative;
 }
 .app:hover { transform: scale(1.1); }
 
@@ -191,24 +190,6 @@ button {
   0% { transform: translate(0,0); }
   100% { transform: translate(0,2px); }
 }
-
-/* FEATURE CARD MODAL */
-.feature-card {
-  position:absolute;
-  top:50%;
-  left:50%;
-  transform:translate(-50%, -50%);
-  width:260px;
-  background:#fff;
-  border-radius:16px;
-  padding:16px;
-  border:1px solid #E5E7EB;
-  box-shadow:0 8px 16px rgba(0,0,0,0.2);
-  display:none;
-  z-index:20;
-  text-align:center;
-}
-.feature-card button { margin-top:12px; }
 </style>
 </head>
 <body>
@@ -236,16 +217,16 @@ button {
       <h3>Home</h3>
       <p style="font-size:13px">Human-centric automation, running on-device</p>
       <div class="icon-grid">
-        <div class="app" onclick="openFeature('AIOPs')"><div class="icon"></div>AIOPs</div>
-        <div class="app" onclick="openFeature('Automation')"><div class="icon"></div>Automation</div>
-        <div class="app" onclick="openFeature('Monitor')"><div class="icon"></div>Monitor</div>
-        <div class="app" onclick="openFeature('Security')"><div class="icon"></div>Security</div>
-        <div class="app" onclick="openFeature('System')"><div class="icon"></div>System</div>
-        <div class="app" onclick="openFeature('Connect')"><div class="icon"></div>Connect</div>
+        <div class="app" onclick="openMock('aiops')"><div class="icon"></div>AIOPs</div>
+        <div class="app" onclick="openMock('automation')"><div class="icon"></div>Automation</div>
+        <div class="app" onclick="openMock('monitor')"><div class="icon"></div>Monitor</div>
+        <div class="app" onclick="openMock('security')"><div class="icon"></div>Security</div>
+        <div class="app" onclick="openMock('system')"><div class="icon"></div>System</div>
+        <div class="app" onclick="openMock('connect')"><div class="icon"></div>Connect</div>
       </div>
     </div>
 
-    <!-- FEATURE SCREENS -->
+    <!-- MOCK FEATURE SCREENS -->
     <div class="mock-screen" id="aiops">
       <h3>AIOPs Brain Engine</h3>
       <div class="card">
@@ -269,13 +250,6 @@ button {
     <!-- AI CURSOR -->
     <div id="ai-cursor"></div>
 
-    <!-- FEATURE MODAL -->
-    <div id="feature-card" class="feature-card">
-      <h4 id="feature-title">Feature</h4>
-      <p id="feature-desc">Description goes here.</p>
-      <button onclick="closeFeature()">Close</button>
-    </div>
-
   </div>
 </div>
 
@@ -289,28 +263,15 @@ function show(id) {
   document.getElementById(id).classList.add('active');
 }
 
-/* Open a mock screen */
-function openFeature(name) {
-  const features = {
-    'AIOPs':'Central hub for AI operations, privacy-first, on-device.',
-    'Automation':'Automates repetitive tasks seamlessly on your device.',
-    'Monitor':'Monitor system performance and device usage in real-time.',
-    'Security':'Detects threats and protects your data locally.',
-    'System':'Manage device resources efficiently with AI.',
-    'Connect':'Connect and integrate apps and services securely.'
-  };
-  document.getElementById('feature-title').innerText = name;
-  document.getElementById('feature-desc').innerText = features[name];
-  document.getElementById('feature-card').style.display='block';
+/* Open mock screen */
+function openMock(id) {
+  show(id);
 }
-
-/* Close feature modal */
-function closeFeature() { document.getElementById('feature-card').style.display='none'; }
 
 /* Back to home */
 function backHome(){ show('home'); }
 
-/* AI Cursor Animation (only on authorize click) */
+/* AI Cursor Animation ONLY after clicking Authorize Task */
 function startAI() {
   const cursor = document.getElementById("ai-cursor");
   cursor.style.display = "flex";
