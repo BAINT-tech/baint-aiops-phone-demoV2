@@ -143,6 +143,47 @@ button{
 <div class="screen-wrapper">
 
 <div class="notch"></div>
+  
+
+  /* AI CAMERA EYE */
+#ai-cursor {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+/* Tiny camera lens */
+.ai-eye {
+  width:6px;
+  height:6px;
+  background:#fff;
+  border-radius:50%;
+  position:relative;
+  animation: eyePulse 1.6s infinite;
+}
+
+/* Camera scan pulse */
+.ai-eye::after {
+  content:'';
+  position:absolute;
+  top:-4px;
+  left:-4px;
+  width:14px;
+  height:14px;
+  border-radius:50%;
+  border:1px solid rgba(255,255,255,.6);
+  animation: scan 1.6s infinite;
+}
+
+@keyframes eyePulse {
+  0%,100% { opacity:1 }
+  50% { opacity:.5 }
+}
+
+@keyframes scan {
+  0% { transform:scale(.6); opacity:.6 }
+  100% { transform:scale(1.4); opacity:0 }
+}
 
 <!-- BOOT -->
 <div class="screen active" id="boot">
@@ -196,7 +237,9 @@ button{
 <div class="mock-screen" id="system"><h3>System</h3><button onclick="backHome()">Back</button></div>
 <div class="mock-screen" id="connect"><h3>Connect</h3><button onclick="backHome()">Back</button></div>
 
-<div id="ai-cursor"></div>
+<div id="ai-cursor">
+  <span class="ai-eye"></span>
+</div>
 
 </div>
 </div>
