@@ -91,9 +91,7 @@ body {
   animation:load 4s linear forwards;
 }
 
-@keyframes load {
-  to { width:100%; }
-}
+@keyframes load { to { width:100%; } }
 
 /* FOOTER */
 .boot-footer {
@@ -106,14 +104,8 @@ body {
 }
 
 /* TEXT */
-h2,h3 {
-  margin:8px 0;
-}
-
-p {
-  color:#6B7280;
-  font-size:14px;
-}
+h2,h3 { margin:8px 0; }
+p { color:#6B7280; font-size:14px; }
 
 /* ICON GRID */
 .icon-grid {
@@ -162,34 +154,21 @@ button {
 
 /* AI CURSOR */
 #ai-cursor {
-  width:20px;
-  height:20px;
+  width:16px;
+  height:16px;
   background:#1E90FF;
   border-radius:50%;
   position:absolute;
-  top:60%;
-  left:20%;
+  top:0;
+  left:0;
   display:none;
   z-index:10;
   box-shadow:0 0 12px rgba(30,144,255,0.9);
-  display:flex;
-  justify-content:center;
-  align-items:center;
 }
-#ai-cursor::after {
-  content:'';
-  width:6px;
-  height:6px;
-  background:#000;
-  border-radius:50%;
-  display:block;
-  box-shadow:0 0 3px rgba(0,0,0,0.5);
-  animation:scan 1s linear infinite alternate;
-}
-@keyframes scan {
-  0% { transform: translate(0,0); }
-  100% { transform: translate(0,2px); }
-}
+
+/* MOCK FEATURE SCREEN */
+.mock-screen { display:none; padding:16px; }
+.mock-screen.active { display:block; }
 </style>
 </head>
 <body>
@@ -216,6 +195,7 @@ button {
     <div class="screen" id="home">
       <h3>Home</h3>
       <p style="font-size:13px">Human-centric automation, running on-device</p>
+
       <div class="icon-grid">
         <div class="app" onclick="openMock('aiops')"><div class="icon"></div>AIOPs</div>
         <div class="app" onclick="openMock('automation')"><div class="icon"></div>Automation</div>
@@ -229,23 +209,47 @@ button {
     <!-- MOCK FEATURE SCREENS -->
     <div class="mock-screen" id="aiops">
       <h3>AIOPs Brain Engine</h3>
-      <div class="card">
+      <div class="card" id="task-card">
         <strong>Authorized Task Automation</strong>
         <p>AI executes tasks visually like a human using your device.</p>
         <button onclick="startAI()">Authorize Task</button>
       </div>
-      <div class="card">
+      <div class="card" id="moment-card">
         <strong>Moment Detection</strong>
         <p>On-device intelligence • Privacy-first • No cloud</p>
       </div>
       <button onclick="backHome()">Back</button>
     </div>
 
-    <div class="mock-screen" id="automation"><h3>Automation</h3><p>Simulate automating repetitive tasks seamlessly.</p><button onclick="backHome()">Back</button></div>
-    <div class="mock-screen" id="monitor"><h3>Monitor</h3><p>Simulate monitoring apps and system health in real-time.</p><button onclick="backHome()">Back</button></div>
-    <div class="mock-screen" id="security"><h3>Security</h3><p>Privacy-first security mock interface.</p><button onclick="backHome()">Back</button></div>
-    <div class="mock-screen" id="system"><h3>System</h3><p>Simulate system controls and settings mockup.</p><button onclick="backHome()">Back</button></div>
-    <div class="mock-screen" id="connect"><h3>Connect</h3><p>Simulate connecting apps and devices.</p><button onclick="backHome()">Back</button></div>
+    <div class="mock-screen" id="automation">
+      <h3>Automation</h3>
+      <p>Simulate automating repetitive tasks seamlessly.</p>
+      <button onclick="backHome()">Back</button>
+    </div>
+
+    <div class="mock-screen" id="monitor">
+      <h3>Monitor</h3>
+      <p>Simulate monitoring apps and system health in real-time.</p>
+      <button onclick="backHome()">Back</button>
+    </div>
+
+    <div class="mock-screen" id="security">
+      <h3>Security</h3>
+      <p>Privacy-first security mock interface.</p>
+      <button onclick="backHome()">Back</button>
+    </div>
+
+    <div class="mock-screen" id="system">
+      <h3>System</h3>
+      <p>Simulate system controls and settings mockup.</p>
+      <button onclick="backHome()">Back</button>
+    </div>
+
+    <div class="mock-screen" id="connect">
+      <h3>Connect</h3>
+      <p>Simulate connecting apps and devices.</p>
+      <button onclick="backHome()">Back</button>
+    </div>
 
     <!-- AI CURSOR -->
     <div id="ai-cursor"></div>
@@ -264,22 +268,43 @@ function show(id) {
 }
 
 /* Open mock screen */
-function openMock(id) {
-  show(id);
-}
+function openMock(id) { show(id); }
 
 /* Back to home */
 function backHome(){ show('home'); }
 
-/* AI Cursor Animation ONLY after clicking Authorize Task */
+/* AI Cursor Animation AFTER clicking Authorize Task */
 function startAI() {
   const cursor = document.getElementById("ai-cursor");
-  cursor.style.display = "flex";
-  cursor.animate([
-    { transform:"translate(0,0)"},
-    { transform:"translate(140px,-120px)"},
-    { transform:"translate(220px,-40px)"}
-  ], { duration:3000, easing:"ease-in-out", fill:"forwards"});
+  cursor.style.display = "block";
+
+  const taskCard = document.getElementById("task-card");
+  const momentCard = document.getElementById("moment-card");
+
+  // sequence positions relative to AIOPs mock screen
+  const positions = [
+    {el: taskCard, duration:1200},
+    {el: momentCard, duration:1200},
+    {el: document.querySelector("button[onclick='backHome()']"), duration:1000}
+  ];
+
+  let i = 0;
+
+  function moveCursor() {
+    if(i >= positions.length) { cursor.style.display="none"; return; }
+    const rect = positions[i].el.getBoundingClientRect();
+    const wrapperRect = document.querySelector(".screen-wrapper").getBoundingClientRect();
+    const x = rect.left - wrapperRect.left + rect.width/2 - 8;
+    const y = rect.top - wrapperRect.top + rect.height/2 - 8;
+
+    cursor.animate([
+      { transform: `translate(${cursor.offsetLeft}px, ${cursor.offsetTop}px)` },
+      { transform: `translate(${x}px, ${y}px)` }
+    ], { duration: positions[i].duration, easing:"ease-in-out", fill:"forwards" })
+    .onfinish = () => { i++; setTimeout(moveCursor, 400); };
+  }
+
+  moveCursor();
 }
 </script>
 
